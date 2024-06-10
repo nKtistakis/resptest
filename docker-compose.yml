@@ -1,0 +1,8 @@
+services:
+  responsy-website:
+    container_name: website
+    image: tastebit/responsy-website:plat
+    restart: always
+
+    ports:
+      - 3000:80

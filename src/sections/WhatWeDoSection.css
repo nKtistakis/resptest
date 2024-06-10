@@ -1,0 +1,24 @@
+.slide {
+    opacity: 0;
+    
+    animation: slideIn 1.6s ease-in-out forwards;
+    
+  }
+  
+  .slide.d2 {
+    animation-delay: 500ms;
+  }
+  .slide.d3 {
+    animation-delay: 1000ms;
+  }
+
+
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+    }
+    
+    100% {
+      opacity:1;
+    }
+  }

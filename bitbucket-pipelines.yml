@@ -1,0 +1,56 @@
+pipelines:
+  # default:
+  # - step:
+  #     name: Build and Test
+  #     image: node:22
+  #     caches:
+  #     - node
+  #     script:
+  #     - npm install
+  #     #TODO: add basic tests
+  #     # - npm test
+  #     - ls -la
+  #     - pwd
+  #     - ls ../
+  #
+
+  branches:
+    main:
+      - step:
+          name: Deploy to Registry
+          script:
+            - docker build -t tastebit/responsy-website:latest -t tastebit/responsy-website:$BITBUCKET_COMMIT .
+            - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
+            - docker push tastebit/responsy-website --all-tags
+          services:
+            - docker
+
+      - step:
+          name: Deploy to droplet
+          trigger: "manual"
+          script:
+            - ls -la
+            - pipe: atlassian/ssh-run:0.2.2
+              variables:
+                SSH_USER: $SSH_USER
+                SSH_KEY: $SSH_KEY
+                SERVER: $SSH_SERVER
+                COMMAND: >
+                  echo $DOCKER_HUB_PASSWORD | docker login --username $DOCKER_HUB_USERNAME --password-stdin &&
+                  docker-compose -f /home/runner/website/docker-compose.yml up -d
+          services:
+            - docker
+# ssssssssssssssssssssssssssssssssssssssss
+
+# The following deployment steps will be executed for each pipeline run. To configure your steps and conditionally deploy see https://support.atlassian.com/bitbucket-cloud/docs/configure-bitbucket-pipelinesyml/
+# - step:
+#     name: 'Deployment to Staging'
+#     deployment: staging
+#     script:
+#       - echo "Your deployment to staging script goes here..."
+# - step:
+#     name: 'Deployment to Production'
+#     deployment: production
+#     trigger: 'manual'
+#     script:
+#       - echo "Your deployment to production script goes here..."

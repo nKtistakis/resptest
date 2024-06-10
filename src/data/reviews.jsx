@@ -1,0 +1,8 @@
+import Review from "../entities/Review";
+
+
+export const reviews = [
+    new Review('John Doe','Good cocktail and waffle. However, the service is very bad. Slow and constantly searching for staff. We also ordered a carbonara and a margarita. The pasta is tasteless and full of oil. The pizza dough is soggy.', 2),
+    new Review('James Winston', 'The place is only worth it for the view, which is truly stunning. We went on Sunday afternoon after a very difficult week with work, and it turned out to be sour. The girl who served us was tragic, I have never seen a more sour face. She didn\'t even say good morning when she came to us, neither thank you nor anything. People who don\'t want to work should probably not work. When it was time to pay, she just said dryly "It\'s 18€." I hope this improves. As for the food, we ordered sweet and savory pancakes, apparently they used the same batter for both. The savory ones were inedible as you could only taste the sweetness of the pancakes, which was very intense. You were eating sweet along with mayonnaise, cheese, and egg. It was truly tragic and unacceptable. Not to mention the egg, which you could barely stab with the fork and eat. I have never eaten a harder and more tasteless fried egg. It probably takes a lot of effort to mess up a fried egg... and they charge 10€ for it... I\'m sorry...', 2),
+    new Review('Helen Blanc', 'Wonderful place. The view is unique. The staff is very polite. We went yesterday, 6-7-23, and we were served by a sweet girl upstairs for drinks. She helped us choose a very nice cocktail. I don\'t remember her name; she had long black hair.', 5),
+];

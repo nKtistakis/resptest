@@ -24,6 +24,7 @@ jobs:
         run: |
           docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          echo ${{ secrets.SSH_HOST }} && echo ${{ secrets.SSH_USER }}
 
   deploy:
     needs: publish

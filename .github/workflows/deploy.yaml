@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: nktistakis/leasefront:latest
+  IMAGE_NAME: nktistakis/resptest:latest
 
 jobs:
   publish:

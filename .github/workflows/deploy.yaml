@@ -28,7 +28,10 @@ jobs:
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
       - name: Overwrite docker-compose.yaml on host
         run: |
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} docker-compose.yaml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_WORKDIR }} 
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          scp docker-compose.yaml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_WORKDIR }} 
 
 
   deploy:

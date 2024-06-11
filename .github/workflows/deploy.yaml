@@ -12,19 +12,24 @@ env:
 
 jobs:
   publish:
-    name: publish image
+    name: Build & Publish Image
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
-      - name: Login
+      - name: Login to Container Registry
         run: |
-          echo ${{ secrets.PAT }} | docker login ghcr.io -u nktistakis --password-stdin
-      - name: Build and Publish
+          echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ secrets.REGISTRY_USER }} --password-stdin
+      - name: Build
         run: |
           docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: Push
+        run: |
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          echo ${{ secrets.SSH_HOST }} && echo ${{ secrets.SSH_USER }}
+      - name: Overwrite docker-compose.yaml on host
+        run: |
+          scp -i ${{ secrets.SSH_PRIVATE_KEY }} docker-compose.yaml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_WORKDIR }} 
+
 
   deploy:
     needs: publish
@@ -41,9 +46,8 @@ jobs:
           # port: ${{ secrets.PORT }}
           script_stop: true
           script: |
-            echo ${{ secrets.PAT }} | docker login ghcr.io -u nktistakis --password-stdin
+            echo ${{ secrets.PAT }} | docker login ghcr.io -u ${{ secrets.REGISTRY_USER }} --password-stdin
             cd ${{ secrets.SSH_WORKDIR }} 
-            ls
             docker-compose pull
             docker-compose up -d
             exit
